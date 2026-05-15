@@ -26,7 +26,24 @@
          ===================================================== -->
     <script>
       const firebaseConfig = {
-        apiKey:            "YOUR_API_KEY",
+        apiKey:            "// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAU61n5b_8eEgCEIQKQ_k2vTmgPHFEPSjo",
+  authDomain: "unoverse-game.firebaseapp.com",
+  databaseURL: "https://unoverse-game-default-rtdb.firebaseio.com",
+  projectId: "unoverse-game",
+  storageBucket: "unoverse-game.firebasestorage.app",
+  messagingSenderId: "827550792240",
+  appId: "1:827550792240:web:6caaf319bd217b941d0bf5"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);",
         authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
         databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
         projectId:         "YOUR_PROJECT_ID",
