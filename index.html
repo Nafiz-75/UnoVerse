@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UnoVerse</title>
+    <meta
+      name="description"
+      content="UnoVerse is a premium browser UNO table with rooms, chat, animations, UNO calls, and multiple variants."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true"></div>
+    <main id="app" class="shell"></main>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+    <!-- =====================================================
+         STEP 1: Replace the values below with YOUR Firebase
+         project config (from Firebase Console → Project
+         Settings → Your apps → SDK setup and configuration)
+         ===================================================== -->
+    <script>
+      const firebaseConfig = {
+        apiKey:            "YOUR_API_KEY",
+        authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+        databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+        projectId:         "YOUR_PROJECT_ID",
+        storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId:             "YOUR_APP_ID"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- app.js does NOT need type="module" with Firebase compat SDK -->
+    <script src="app.js"></script>
+  </body>
+</html>
