@@ -45,6 +45,27 @@ function uid(prefix = "id") {
   return `${prefix}_${Math.random().toString(36).slice(2, 10)}_${Date.now().toString(36)}`;
 }
 
+function toArr(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val;
+  return Object.keys(val).sort((a, b) => Number(a) - Number(b)).map((k) => val[k]);
+}
+
+function fromFirebase(raw) {
+  if (!raw) return raw;
+  const s = { ...raw };
+  s.players = toArr(s.players).map((p) => ({ ...p, hand: toArr(p.hand) }));
+  s.chat = toArr(s.chat);
+  s.spectators = toArr(s.spectators || []);
+  if (s.game) {
+    s.game = { ...s.game };
+    s.game.deck = toArr(s.game.deck);
+    s.game.discard = toArr(s.game.discard);
+    s.game.log = toArr(s.game.log || []);
+  }
+  return s;
+}
+
 function makeRoomCode() {
   return `${pick(adjectives)}-${pick(nouns)}-${Math.floor(100 + Math.random() * 900)}`;
 }
@@ -90,7 +111,7 @@ function connectRoom(code) {
   roomListener = firebaseDB.ref(`rooms/${roomKey()}`).on(
     "value",
     (snapshot) => {
-      const remote = snapshot.val();
+      const remote = fromFirebase(snapshot.val());
       if (!remote) return;
       if ((remote.version || 0) <= lastSeenVersion && state) return;
       state = remote;
@@ -139,9 +160,9 @@ async function joinRoom({ name, gender, code }) {
   view = "joining";
   render();
   try {
-    if (!firebaseDB) throw new Error("Firebase not ready");
+    if (!firebaseDB) throw new Error("Firebase not ready — check your databaseURL in index.html");
     const snapshot = await firebaseDB.ref(`rooms/${roomKey(normalized)}`).get();
-    const existing = snapshot.val();
+    const existing = fromFirebase(snapshot.val());
     if (!existing) {
       toast("Room not found. Double-check the room code.");
       view = "entry";
@@ -159,7 +180,10 @@ async function joinRoom({ name, gender, code }) {
     writeRoom(existing);
   } catch (err) {
     console.error("Join failed:", err);
-    toast("Could not join room — check the code and your connection.");
+    const msg = err.code === "PERMISSION_DENIED"
+      ? "Firebase rules blocking access — check database.rules.json in Firebase Console."
+      : err.message || "Could not join room — check the code and your connection.";
+    toast(msg);
     view = "entry";
     render();
   }
@@ -919,14 +943,21 @@ function escapeHtml(value = "") {
 
 async function init() {
   try {
+    const cfg = firebase.app().options;
+    if (!cfg.databaseURL || cfg.databaseURL.includes("YOUR_PROJECT")) {
+      toast("Firebase config incomplete — open index.html and fill in your firebaseConfig.");
+      render();
+      return;
+    }
     firebaseDB = firebase.database();
+    await firebaseDB.ref(".info/connected").get();
   } catch (err) {
     console.error("Firebase init failed:", err);
-    toast("Firebase config error — check your firebaseConfig in index.html.");
+    toast("Firebase error: " + (err.message || err.code || "check your config in index.html"));
+    render();
+    return;
   }
-  if (roomCode) {
-    connectRoom(roomCode);
-  }
+  if (roomCode) connectRoom(roomCode);
   render();
 }
 
