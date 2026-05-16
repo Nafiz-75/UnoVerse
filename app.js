@@ -75,7 +75,7 @@ function pick(items) {
 }
 
 function roomKey(code = roomCode) {
-  return (code || roomCode).toUpperCase().replace(/-/g, "_");
+  return (code || roomCode).toUpperCase().replace(/[^A-Z0-9]/g, "_");
 }
 
 function readRoom() {
@@ -960,8 +960,7 @@ async function init() {
       );
     }
     firebaseDB = firebase.database();
-    await firebaseDB.ref(".info/connected").get();
-    console.log("UnoVerse: Firebase connected successfully.");
+    console.log("UnoVerse: Firebase initialized successfully.");
   } catch (err) {
     console.error("UnoVerse Firebase init error:", err.message);
     toast("Firebase error: " + err.message);
