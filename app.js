@@ -943,17 +943,28 @@ function escapeHtml(value = "") {
 
 async function init() {
   try {
+    if (typeof firebase === "undefined") {
+      throw new Error("Firebase SDK did not load. Check your internet and refresh.");
+    }
+    if (!firebase.apps || firebase.apps.length === 0) {
+      throw new Error(
+        "firebase.initializeApp() was not called. " +
+        "Your index.html firebaseConfig script has an error — make sure you used the correct index.html file."
+      );
+    }
     const cfg = firebase.app().options;
     if (!cfg.databaseURL || cfg.databaseURL.includes("YOUR_PROJECT")) {
-      toast("Firebase config incomplete — open index.html and fill in your firebaseConfig.");
-      render();
-      return;
+      throw new Error(
+        "databaseURL is missing or not filled in. " +
+        "Go to Firebase Console → Realtime Database and copy the URL into index.html."
+      );
     }
     firebaseDB = firebase.database();
     await firebaseDB.ref(".info/connected").get();
+    console.log("UnoVerse: Firebase connected successfully.");
   } catch (err) {
-    console.error("Firebase init failed:", err);
-    toast("Firebase error: " + (err.message || err.code || "check your config in index.html"));
+    console.error("UnoVerse Firebase init error:", err.message);
+    toast("Firebase error: " + err.message);
     render();
     return;
   }
