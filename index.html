@@ -15,46 +15,23 @@
     <main id="app" class="shell"></main>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (do not change these lines) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-    <!-- =====================================================
-         STEP 1: Replace the values below with YOUR Firebase
-         project config (from Firebase Console → Project
-         Settings → Your apps → SDK setup and configuration)
-         ===================================================== -->
     <script>
       const firebaseConfig = {
-        apiKey:            "// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAU61n5b_8eEgCEIQKQ_k2vTmgPHFEPSjo",
-  authDomain: "unoverse-game.firebaseapp.com",
-  databaseURL: "https://unoverse-game-default-rtdb.firebaseio.com",
-  projectId: "unoverse-game",
-  storageBucket: "unoverse-game.firebasestorage.app",
-  messagingSenderId: "827550792240",
-  appId: "1:827550792240:web:6caaf319bd217b941d0bf5"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);",
-        authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL:       "https://unoverse-game-default-rtdb.firebaseio.com/",
-        projectId:         "YOUR_PROJECT_ID",
-        storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId:             "YOUR_APP_ID"
+        apiKey:            "AIzaSyAU61n5b_8eEgCEIQKQ_k2vTmgPHFEPSjo",
+        authDomain:        "unoverse-game.firebaseapp.com",
+        databaseURL:       "https://unoverse-game-default-rtdb.firebaseio.com",
+        projectId:         "unoverse-game",
+        storageBucket:     "unoverse-game.firebasestorage.app",
+        messagingSenderId: "827550792240",
+        appId:             "1:827550792240:web:6caaf319bd217b941d0bf5"
       };
       firebase.initializeApp(firebaseConfig);
     </script>
 
-    <!-- app.js does NOT need type="module" with Firebase compat SDK -->
     <script src="app.js"></script>
   </body>
 </html>
